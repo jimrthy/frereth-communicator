@@ -2,5 +2,8 @@
 
 (defpackage #:frereth-communicator
   (:use #:cl)
-  (:export #:build-repl-y-client #:send-to-repl-y-client))
+  (:export #:communicator))
 
+(defpackage #:frereth-communicator-system
+  (:use #:cl #:zeromq)
+  (:export #:init #:start #:stop))
