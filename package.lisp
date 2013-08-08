@@ -2,7 +2,7 @@
 
 (defpackage #:frereth-communicator
   (:use #:cl)
-  (:export #:communicator))
+  (:export #:get))
 
 (defpackage #:frereth-communicator-system
   (:use #:cl #:zeromq)

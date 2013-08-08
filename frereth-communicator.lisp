@@ -31,3 +31,52 @@ communication."
 ;; And it totally does not belong here.
 ;;(defvar *context* (zmq:context 4))
 
+(defclass -communicator ()
+  (
+   ;; slots go in here...don't forget to export the interesting ones.
+   ;; Or not...there really should *not* be anything interesting in
+   ;; here from a client's perspective.
+   )
+  :documentation "This is really supposed to be a wrapper around two
+zeromq sockets.
+
+But that should be version-dependent and totally hidden.
+
+Right now, I'm thinking that we need a Subscriber for drawing events
+from the server and a REQ (lazy pirate!) for event notification.
+
+That should be completely and totally transparent to callers.
+They call get, it returns a black box they can either use or
+hack on as they see fit...like sensible adults.
+
+Or whatever the alternatives there are.
+")
+
+;; It's tempting to make this a generic
+(defun get (version)
+  "Which communicator do you want?"
+  (declare (ignore version))
+  (make-instance '-communicator))
+
+;;; What else should be exported here?
+
+;;; Send UI events to a communicator
+;;; Of course, it's a waste of bandwidth to do that if the
+;;; client doesn't care about those events.
+;;; And it makes life more complicated if we force them
+;;; to register for interesting events.
+;;; Especially since that interest may be extremely
+;;; transitory (is that true in practice?)
+
+;;; Render events from communicator.
+;;; Client sends a notice that something needs to be
+;;; redrawn.
+;;; For that matter, so does the windowing system (is
+;;; there a reasonable way to make that happen in here?
+;;; Does that approach make sense?)
+;;; There are also internal timer events.
+
+;;; None of those belong in here...but creating a
+;;; socket pair might.
+
+;;; Whatever. What does make sense?

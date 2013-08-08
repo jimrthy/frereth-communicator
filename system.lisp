@@ -30,10 +30,19 @@
   ;; here is that (by a context's nature) if you want to change
   ;; something this fundamental, you really have to restart the
   ;; entire networking subsystem anyway.
-  (setf (gethash 'ctx (zmq:context 4))))
+ 
+  ;; N.B. This has been deprecated by zmq_ctx_new. (Which, maybe
+  ;; most importantly, seems to figure out the threading situation
+  ;; on its own).
+  ;; But this is still what's documented here. 
+  ;; Q: Which does the language binding call?
+  (setf (gethash 'ctx (zmq:init 4))))
 
 (defun stop (world)
   "Run side-effects to turn interesting world into a desolate wasteland"
+
+  ;; Note that all the sockets need to be closed first
   (let ((ctx (gethash 'ctx world)))
-    (if ctx
-	)))
+    (when ctx
+      (progn (zmq:term ctx)
+	     (setf (gethash 'ctx world) nil)))))
